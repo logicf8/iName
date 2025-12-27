@@ -1,4 +1,4 @@
-import ArticleDB from "../../data/ArticleDB.js";
+import ArticleDB from "../../Data/ArticleDB.js";
 
 export const data = ArticleDB.map(str => {
   const parts = str.split("_");
@@ -15,4 +15,5 @@ export const data = ArticleDB.map(str => {
     group2: parts[8],
     group3: parts[9],
   };
+
 });
