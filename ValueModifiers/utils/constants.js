@@ -1,0 +1,14 @@
+export const G1 = ["Stomme", "Vitvara", "Diskho", "InredningStomme", "FrontFamilj", "FrontTillbehör", "Måttbeställt"];
+export const G1_0 = ["Bänkskåp", "Väggskåp", "Högskåp", "Överskåp", "Bänkhörnskåp", "Vägghörnskåp"];
+export const G1_0_G3 = ["Inbyggnad", "Hörn", "Fläkt"];
+export const G1_1 = ["Ugn", "KombiMikro", "Mikro", "Häll", "Köksfläkt", "Kyl/Frys", "Tillbehör", "Diskmaskin", "Tvättmaskin/Torktumlare"];
+export const G1_1_G2_3 = ["Inbyggd fläkt"];
+export const G1_1_G2_6 = ["Kolfilter"]
+export const G1_3_G2 = ["Låda", "Hyllplan","Trådback", "Arbetsyta", "Skafferiutdrag", "Städskåpsinredning", "Karusell"];
+export const G1_3_G2_0 = ["Låda", "Utdrag", "Innerlådfront", "Påbyggnadssidor", "Tillbehör"]
+export const G1_4_G2 = ["Dörr", "Lådfront", "Front för diskmaskin", "Täcksida", "Täcksida med ben"]
+export const G1_4_G2_0 = ["Vitrindörr"]
+export const G1_5_G2 = ["Gångjärn", "FrontPåverkande"]
+export const G1_5_G2_0 = ["horrisontella"]
+export const G1_5_G2_1 = ["LådaPåDörr", "MontKitUtdrag", "Koppling"]
+export const G1_6_G2 = ["Bänkskiva", "Väggplatta"]

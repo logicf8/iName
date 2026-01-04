@@ -1,0 +1,45 @@
+import { meValuesIfNeeded } from './meHandler/txtExtractorME.js'
+import { artValuesModifyComb } from './artCombMod.js'
+import { forButNotInCombo } from './artCoSecondPass.js'
+import { artValuesModifyFreeS } from './artFreeStandMod.js'
+import { artValuesOpen } from './artOpenMod.js'
+import { G1_6_G2 } from './utils/constants.js'
+import { forButNotInFS } from './artFsSecondPass.js'
+import { checkMaterialsAntQuantity } from './preInfoWT.js'
+
+
+export function switchByHeaderVM(sectionPortfolio){
+  sectionPortfolio.returnHeaders().forEach(header => {
+    if(header.constructor.name !== "SecondStageHeader"){
+      header.number = header.originalTxt.split('.')[0];
+    }
+    switch(header.constructor.name){
+      case "CoverPanelHeader": {} break;
+      case "CombinationHeader":{ 
+        artValuesModifyComb(sectionPortfolio, header);
+        meValuesIfNeeded(header);
+        forButNotInCombo(header);
+      }break;
+      case "OpenHeader": {
+        artValuesOpen(header)
+      } break;
+      case "CombinationFreeStanding": {
+        meValuesIfNeeded(header);
+        artValuesModifyFreeS(sectionPortfolio, header)
+        forButNotInFS(header);
+        //setFreeStandingWarrantyTxt(header) 
+      } break;
+      case "SecondStageHeader": {
+        switch(header.originalTxt){
+          case G1_6_G2[0]: { //Bänkskiva
+            sectionPortfolio.cmInfoFlag.wtInfo = checkMaterialsAntQuantity(header);
+          } break;
+          case G1_6_G2[1]: 
+          case "Väggpanel": { //Väggplatta
+            sectionPortfolio.cmInfoFlag.wpInfo = checkMaterialsAntQuantity(header);
+          }break;
+        }  
+      } break;
+    }
+   });
+}
