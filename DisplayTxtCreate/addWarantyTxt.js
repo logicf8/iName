@@ -26,7 +26,7 @@ export function setBaseCabWarrantyTxt(sP, header){
           sP.displayTxts.push(`${startTxt} Diffusionsspärr`)
         } break;
         case 6: {
-          if(preCut > 0){
+          if(wtInfo.preCut > 0){
             sP.displayTxts.push(`${startTxt} Diffusionsspärr`)
           }
         } break;
