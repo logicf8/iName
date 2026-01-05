@@ -9,6 +9,27 @@ import { checkMaterialsAntQuantity } from './preInfoWT.js'
 
 
 export function switchByHeaderVM(sectionPortfolio){
+
+  sectionPortfolio.cmInfoFlag ??= {};
+
+  sectionPortfolio.cmInfoFlag.wtInfo ??= {
+    stats: 0,
+    message: "",
+    count: 0,
+    preCut: 0,
+    firstCustomArticle: null,
+    underglued: []
+  };
+
+  sectionPortfolio.cmInfoFlag.wpInfo ??= {
+    stats: 0,
+    message: "",
+    count: 0,
+    preCut: 0,
+    firstCustomArticle: null,
+    underglued: []
+  };
+
   sectionPortfolio.returnHeaders().forEach(header => {
     if(header.constructor.name !== "SecondStageHeader"){
       header.number = header.originalTxt.split('.')[0];
