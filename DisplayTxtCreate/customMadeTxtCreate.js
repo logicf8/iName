@@ -12,14 +12,6 @@ export function makeHeaderTxt(sP, cfg) {
 
     if (!info) return;
 
-    // Endast färdiga längder
-    if (!info.firstCustomArticle && info.preCut !== 0) {
-        sP.displayTxts.push(
-            info.preCut === 1 ? cfg.header.singularPC : cfg.header.pluralPC
-        );
-        return;
-    }
-
     // Ingenting alls
     if (!info.firstCustomArticle) return;
 
@@ -46,13 +38,20 @@ export function DtByArt(sP, header, cfg) {
 
     header.returnArticles().forEach(article => {
         if(article.artNr === "702.746.28"){
-          sP.displayTxts.push("Stöd för bänkskiva i tomt hörn❌")
+        sP.displayTxts.push("Stöd för bänkskiva i tomt hörn❌")
           return;
-        }  
+        }
 
         if (article.group3 !== "Operation") {
+            if(article.group1 === "Färdiglängd" && sP.cmInfoFlag.wtInfo.stats !== 0)
+            {
+                sP.displayTxts.push(`(${article.group1} - ${article.name} ${article.description} ${article.width} cm, ${article.color})`)
+            }
+            else{
             makeCustomMadeTxt(sP, article, info, cfg);
-        } else {
+            }
+        } 
+        else {
             let dTxt = article.description;
             if(cfg.infoKey === "wtInfo"){
               if(sP.cmInfoFlag.wtInfo.stats > 1){
@@ -64,8 +63,8 @@ export function DtByArt(sP, header, cfg) {
                 dTxt += ` - ${article.color}`
               }
             }
-            sP.displayTxts.push(dTxt)
             
+            sP.displayTxts.push(dTxt)
         }
     });
 }
@@ -83,8 +82,7 @@ function makeCustomMadeTxt(sP, art, info, cfg) {
     const status = info?.stats ?? 0;
 
     if (!info?.firstCustomArticle) {
-        addDimensionOnly(sP.displayTxts, cfg.getDimension(art));
-        return;
+    return; // skriv ingenting alls
     }
 
     switch (status) {
