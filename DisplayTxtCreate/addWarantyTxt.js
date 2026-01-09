@@ -1,4 +1,4 @@
-const startTxt = "( ! ) Viktigt för garanti -"
+const startTxt = "( ! ) Viktigt för garantin -"
 let found = false;
 export function setBaseCabWarrantyTxt(sP, header){
 
@@ -10,8 +10,11 @@ export function setBaseCabWarrantyTxt(sP, header){
   }
   else if(header.forFlags.oven || header.forFlags.combiMicro){
     if(!material && wtInfo.preCut > 0){
-      sP .displayTxts.push(`${startTxt} Diffusionsspärr`)
-    }    
+      sP.displayTxts.push(`${startTxt} Diffusionsspärr`)
+    }
+    else {
+      sP.displayTxts.push("( ! ) Konsoll ska monteras under ugn")
+    }
 
     switch(wtInfo.stats){
         case 1: 
@@ -53,7 +56,7 @@ export function setFreeStandingWarrantyTxt(sP, header){
   }
   else if (header.group2 === "Kyl/Frys"){
       if(header.name === "SPELNÄS"){
-        sP.displayTxts.push(`${startTxt} Golvskydd. KÖP! Vi säljer ej rätt storlek`)
+        sP.displayTxts.push(`${startTxt} Golvskydd. KÖP! Vi säljer inte rätt storlek`)
       }
       else{
         sP.displayTxts.push(`${startTxt} Golvskydd och ventilation`)
