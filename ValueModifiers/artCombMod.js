@@ -6,12 +6,14 @@ import {
   G1_5_G2, G1_5_G2_0, G1_5_G2_1  //["Gångjärn", "FrontPåverkande"] ["horrisontella"] ["LådaPåDörr", "MontKitUtdrag", "Koppling"] 
 } from './utils/constants.js'
 
+
+
 export function artValuesModifyComb(sectionPortfolio, header){
    header.returnArticles().forEach(article => {
     switch(article.group1){
       case G1[0]: { combinationTypeAndSize(sectionPortfolio, header, article) } break; //Bänkskåp
       case G1[1]: { typeOfAppliance(sectionPortfolio, header, article); } break; //Vitvara
-      case G1[2]: { if(article.group2 !== G1_3_G2_0[4]){header.forFlags.sink = true; sectionPortfolio.cmInfoFlag.posCutOut += 1; } } break; //Diskho. Inte tillbehör.
+      case G1[2]: { if(article.group2 !== G1_3_G2_0[4]){header.forFlags.sink = true; sectionPortfolio.cmInfoFlag.sinks += 1; } } break; //Diskho. Inte tillbehör.
       case G1[3]: { interior(header, article); } break; //InredningStomme
       case G1[4]: { fronts(header, article) } break; //FrontFamilj
       case G1[5]: { frontAcc(header, article)} break; //FrontTillbehör
@@ -21,28 +23,25 @@ export function artValuesModifyComb(sectionPortfolio, header){
 
 function frontAcc(header, article){
   switch(article.group2){
-    case G1_5_G2[0]: { //Horrisontella gångjärn => lådfront = dörr.
+    case G1_5_G2[0]: { //Horrisontella gångjärn
       if(article.group3 === G1_5_G2_0[0])
-      { 
-        header.drawersFlags.drawerFront -= 1;
-        header.widthFlags.doors += 1;
-        header.hingeFlags.hHorr += 1;
+      {  
+        header.hingeFlags.hHorr += article.quantity;
       }  
     } break;
     case G1_5_G2[1]: 
     {
       if(article.group3 === G1_5_G2_1[0]){ //LådaPåDörr => dörr = lådfront
-        header.withFlags.doors -= 1;
-        header.drawersFlags.drawerFront += 1;
+        header.withFlags.doors -= article.quantity;
+        header.drawersFlags.drawerFront += article.quantity;
       }
       else if(article.group3 === G1_5_G2_1[1]){ //Monteringskit för utdrag 
-        header.withFlags.drawers -= 2;
-        header.withFlags.pullOut += 1; 
+        header.withFlags.drawers -= 2 * article.quantity;
+        header.withFlags.pullOut += article.quantity; 
       }
       else if(article.group3 === G1_5_G2_1[2]){ //Koppligsskena => 2 fronter blir en.
-        header.withFlags.conectFronts += 1;
-        header.drawersFlags.drawerFront -= 1;
- 
+        header.withFlags.conectFronts += article.quantity;
+        header.drawersFlags.drawerFront -= article.quantity;
       }  
     } break;
   }
@@ -81,9 +80,20 @@ function typeOfAppliance(sectionPortfolio, header, article){
     case G1_1[0]: { header.forFlags.oven = true; } break;
     case G1_1[1]: { header.forFlags.combiMicro = true; } break;
     case G1_1[2]: { header.forFlags.micro = true; } break;
-    case G1_1[3]: { article.group3 === G1_1_G2_3[0] ? header.forFlags.hobFan = true : header.forFlags.hob = true; sectionPortfolio.cmInfoFlag.posCuOut += 1; } break;
+    case G1_1[3]: { article.group3 === G1_1_G2_3[0] ? header.forFlags.hobFan = true : header.forFlags.hob = true; sectionPortfolio.cmInfoFlag.hobs += article.quantity; } break;
     case G1_1[4]: { header.forFlags.fan = true; } break;
     case G1_1[5]: { header.forFlags.fridgeOrF = true; header.applianceDescription === undefined ? header.applianceDescription = article.description : header.applianceDescription = "kyl och fys";} break; // Transport av kyl eller frys.
+    case G1_1[6]: {
+      switch(article.artNr){
+        case "406.204.80": //Hyllplansskydd diskbänksskåp
+        case "606.204.79":
+        case "806.204.78": { header.forFlags.sink = true }break;
+        case "102.432.96": //Hällskydd
+        case "302.432.95": { header.forFlags.hob = true; }break;
+        case "302.214.58": { header.forFlags.fridgeOrF = true; }break; //ventilationsgaller sockel
+        case "103.019.60": { header.forFlags.oven = true; }break; //Konsol för ugn
+      }
+    }break;
   }  
 }
 
@@ -95,7 +105,7 @@ function combinationTypeAndSize(sectionPortfolio, header, article){
     }
     else if(article.group2 === G1_0[0] && header.originalTxt.includes("Bänkhörnskåp 135 grader")){ //Bänkskåp
       header.description = `${G1[4]}  ${article.width} cm`; header.corner135 = true; type = G1[0]; //Bänkhörnskåp
-      sectionPortfolio.cmInfoFlag.posCuOut += 4; 
+      sectionPortfolio.cmInfoFlag.corner135 += article.quantity; 
     }
     else{
       header.description = `${article.description} ${article.width} cm`; type = article.group2; 
@@ -109,7 +119,7 @@ function combinationTypeAndSize(sectionPortfolio, header, article){
 
   switch(article.group3){
     case G1_0_G3[0]: { header.builtIn = true;} break;
-    case G1_0_G3[1]: { header.corner = true; sectionPortfolio.cmInfoFlag.corners += 1; } break;  
+    case G1_0_G3[1]: { header.corner = true; sectionPortfolio.cmInfoFlag.corners += article.quantity; } break;  
     case G1_0_G3[2]: { header.fan = true; } break;
   }
 }
