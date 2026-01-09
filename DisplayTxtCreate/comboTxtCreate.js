@@ -1,7 +1,6 @@
 export function createDisplayTxtCombo(sectionPortfolio, header) {
 
     let displayName = `${header.number}. ${header.description}`;
-
     // -----------------------------------------------------
     //  1. Vitvaror (forFlags)
     // -----------------------------------------------------
@@ -27,11 +26,12 @@ export function createDisplayTxtCombo(sectionPortfolio, header) {
     if (appParts.length > 0) {
         displayName += " för " + appParts.join(", ");
     }
-    if(!bypass){
+    if(!bypass){ 
     // -----------------------------------------------------
-    //  2. withFlags — totalt omgjord
+    //  2. withFlags
     // -----------------------------------------------------
     const w = header.withFlags;
+    const f = header.hingeFlags;
     const flagList = [];
 
     // Grupp 1 — Om någon är true, stoppa resten
@@ -39,7 +39,7 @@ export function createDisplayTxtCombo(sectionPortfolio, header) {
     if (w.carousel > 0) flagList.push("karusell");
     if (w.larder > 0) flagList.push("skafferiutdrag");
     if (w.cleaningInt > 0) flagList.push("städskåpsinredning");
-
+    
     if (flagList.length === 0) {
         // Grupp 2 — körs bara om ingen i grupp 1 var true
         let oFrontDrawersNr = outDrawCheck(header); 
@@ -49,6 +49,14 @@ export function createDisplayTxtCombo(sectionPortfolio, header) {
         if (w.workSerfaces > 0) flagList.push(w.workSerfaces === 1 ? "arbetsyta" : "arbetsytor");
         if (w.conectFronts > 0) flagList.push("ihopkopplade fronter");
         if (blindCheck(header)) flagList.push("blindfront");
+        
+
+        if (f.hHorr > 0) { //Horisontella gångjärn
+            let check = freeOutFronts(header);
+            if(f.hHorr === check) { flagList.push(f.hHorr === 1 ? "horisontell dörr" : "horisontella dörrar"); }
+            else if(f.hHorr === w.glasDoors && check === 0){ flagList.push(f.hHorr === 1 ? "horisontell vitrindörr" : "horisontella vitrindörrar"); w.glasDoors -= f.hHorr}
+            else if(f.hHorr === check + w.glasDoors) { flagList.push("horisontell; dörr och vitrindörr"); w.glasDoors -= (f.hHorr - check) }
+        }
         if (w.glasDoors > 0) flagList.push(w.glasDoors === 1 ? "vitrindörr" : "vitrindörrar");
         if (w.doors > 0) flagList.push(w.doors === 1 ? "dörr" : "dörrar");
         if (w.shelfs > 0) flagList.push("hyllplan");
@@ -56,7 +64,8 @@ export function createDisplayTxtCombo(sectionPortfolio, header) {
 
     // Lägg till flaggorna i displayName
     if (flagList.length === 0) {
-        return displayName;
+        sectionPortfolio.displayTxts.push(`${displayName}, utan inredning`)
+        return;
     }
     if (flagList.length === 1) {
         displayName += ", med " + flagList[0];
@@ -71,9 +80,17 @@ export function createDisplayTxtCombo(sectionPortfolio, header) {
     sectionPortfolio.displayTxts.push(header.displayTxt)
 }
 
+function freeOutFronts(header){
+    let doCheck = header.drawersFlags.drawerFront +  header.withFlags.innerDF - header.withFlags.drawers;
+    return doCheck
+}
+
 function blindCheck(header){
-  let doCheck = header.drawersFlags.drawerFront - (header.withFlags.drawers - header.withFlags.innerDF) 
-  if(doCheck === 1) { return true }
+  let doCheck = header.drawersFlags.drawerFront - (header.withFlags.drawers - header.withFlags.innerDF - header.hingeFlags.hHorr)
+  console.log("This is the check: " + doCheck)
+  if(doCheck === 1) {
+    if(header.withFlags.glasDoors === header.hingeFlags.hHorr) return false;
+    return true }
   return false;
 }
 
