@@ -13,7 +13,7 @@ export function setBaseCabWarrantyTxt(sP, header){
       sP.displayTxts.push(`${startTxt} Diffusionsspärr`)
     }
     else {
-      sP.displayTxts.push("( ! ) Konsoll ska monteras under ugn")
+      sP.displayTxts.push("( ! ) Konsol ska monteras under ugn")
     }
 
     switch(wtInfo.stats){
@@ -88,4 +88,5 @@ function headerLegsAndPlints(sP){
 export function meVentWarranty(sP){
   sP.displayTxts.push(`${startTxt} Ventilation i takanslutning ovanför kyl/frys`)
 }
+
 
