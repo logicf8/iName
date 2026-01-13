@@ -168,7 +168,7 @@ function addWithPriceLimit(arr, baseText, color, priceByColor) {
 
     addDisplayTxt(arr, {
         text: fullText.length <= 100 ? fullText : text,
-        level: "info"
+        level: "warning"
     });
 }
 
@@ -181,3 +181,4 @@ function addDimensionOnly(arr, txt) {
         message: "Angivnet mått är ett antagande och behöver ev. justeras."
     });
 }
+
