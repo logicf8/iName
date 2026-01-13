@@ -19,5 +19,7 @@ export function forButNotInFS(header){
   }
 
   if(header.width === undefined) header.width = header.meObject.width;
-  if(header.name === undefined) header.name = "Egen";
+  if(header.name === undefined) header.name = "Egen"; {
+    if(header.group2 === undefined) header.group2 = header.meObject.appliance;
+  }
 }
