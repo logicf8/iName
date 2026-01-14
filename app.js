@@ -12,7 +12,8 @@ const missingH3 = document.getElementById('missingH3')
 const emojiDescription = document.getElementById('emojiDescription')
 const ritningsBtn = document.getElementById('ritningsBtn');
 const internBtn = document.getElementById('internTextBtn');
-const aliasBtn = document.getElementById('aliasBtn')
+const aliasBtn = document.getElementById('aliasBtn');
+const belongBtn = document.getElementById('belongTextBtn');
 let displayArray = [];
 let currentIndex = 0;
 
@@ -183,3 +184,14 @@ aliasBtn.addEventListener('click', () => {
   });
 });
 
+belongBtn.addEventListener('click', () => {
+  const txtBelong = `Tillhör huvudorder: `;
+
+  navigator.clipboard.writeText(txtBelong).then(() => {
+    copyStatus.textContent = txtBelong;
+
+    // Ta bort fet stil från alla rader
+    lastBoldIndex = null;
+    renderList();
+  });
+});
