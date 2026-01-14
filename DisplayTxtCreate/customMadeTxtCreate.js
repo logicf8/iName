@@ -31,7 +31,8 @@ export function makeHeaderTxt(sP, cfg) {
             sP.displayTxts,
             txt,
             art.color,
-            cfg.priceByColor
+            cfg.priceByColor,
+            "info"
         );
     } else {
         addDisplayTxt(sP.displayTxts, {
@@ -136,7 +137,8 @@ function makeCustomMadeTxt(sP, art, info, cfg) {
                 sP.displayTxts,
                 baseTxt,
                 art.color,
-                cfg.priceByColor
+                cfg.priceByColor,
+                "warning"
             );
             break;
         }
@@ -154,7 +156,7 @@ function makeCustomMadeTxt(sP, art, info, cfg) {
 /* HJÄLPFUNKTIONER                                                            */
 /* -------------------------------------------------------------------------- */
 
-function addWithPriceLimit(arr, baseText, color, priceByColor) {
+function addWithPriceLimit(arr, baseText, color, priceByColor, level = "info") {
     if (!baseText) return;
 
     let text = baseText.trim();
@@ -168,7 +170,7 @@ function addWithPriceLimit(arr, baseText, color, priceByColor) {
 
     addDisplayTxt(arr, {
         text: fullText.length <= 100 ? fullText : text,
-        level: "warning"
+        level: level
     });
 }
 
@@ -181,4 +183,3 @@ function addDimensionOnly(arr, txt) {
         message: "Angivnet mått är ett antagande och behöver ev. justeras."
     });
 }
-
