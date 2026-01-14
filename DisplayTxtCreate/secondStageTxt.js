@@ -21,12 +21,13 @@ export function handels(sP, header) {
     const label = GROUP_MAP[article.group2];
     if (label) found.add(label);
   });
-
+  let thisLevel = "info"
+ 
   if (found.size) {
-
+    if(header.expAlert.length > 0) {thisLevel = "expired";   console.log(header.expAlert) }
     addDisplayTxt(sP.displayTxts, {
       text: capitalizeFirstWord(formatList([...found])),
-      level: "info"
+      level: thisLevel
     });
   }
 }
