@@ -24,6 +24,7 @@ export function switchLines(currentHeader, line, currentSectionPortfolio){
 			currentArticle.totPrice = parseFloat(priceLine)
 			}
 			else if (exp){
+				currentArticle.quantity = parseFloat(1);
 				currentArticle.totPrice = parseFloat(0);
 				currentHeader.expAlert.push(currentArticle)
 			}
