@@ -45,8 +45,26 @@ export function createDisplayTxtCombo(sP, header) {
     if (flagList.length === 0) {
         // Grupp 2 — körs bara om ingen i grupp 1 var true
         let oFrontDrawersNr = outDrawCheck(header); 
-        if (oFrontDrawersNr > 0) flagList.push(oFrontDrawersNr === 1 ? "låda" : "lådor");
-        if (w.innerDF > 0) flagList.push(w.innerDF === 1 ? "innerlåda" : "innerlådor");
+        
+        if (w.drawers > 0) { //Det finns lådor
+            console.log(blindCheck(header) + " " + header.number)
+            if(blindCheck(header)) {
+                console.log(header)
+                if (oFrontDrawersNr > 0) flagList.push(oFrontDrawersNr === 1 ? "låda" : "lådor");
+                if (w.innerDF > 0) flagList.push(w.innerDF === 1 ? "innerlåda" : "innerlådor");
+            }
+            else if (oFrontDrawersNr === 0){ //Inga yttre lådfronter
+                flagList.push(w.innerDF === 1 ? "innerlåda" : `${w.innerDF} st innerlådor`);
+            }
+            else {            
+                let txt = w.drawers === 1 ? "låda" : `${w.drawers} lådor`
+                if(w.innerDF > 0){ 
+                txt += w.innerDF === 1 ? ` varav en dold innerlåda` : ` varav ${w.innerDF} dolda innerlådor`
+                }
+                 flagList.push(txt)
+            }
+            
+        }
         if (w.wireBaskets > 0) flagList.push(w.wireBaskets === 1 ? "trådback" : "trådbackar");
         if (w.workSerfaces > 0) flagList.push(w.workSerfaces === 1 ? "arbetsyta" : "arbetsytor");
         if (w.conectFronts > 0) flagList.push("ihopkopplade fronter");
@@ -76,7 +94,8 @@ export function createDisplayTxtCombo(sP, header) {
         displayName += ", med " + flagList[0];
     } else if (flagList.length === 2) {
         displayName += ", med " + flagList[0] + " och " + flagList[1];
-    } else {
+    } 
+    else {
         const last = flagList.pop();
         displayName += ", med " + flagList.join(", ") + " och " + last;
     }
@@ -100,8 +119,9 @@ function freeOutFronts(header){
 
 function blindCheck(header){
   let doCheck = header.drawersFlags.drawerFront - (header.withFlags.drawers - header.withFlags.innerDF - header.hingeFlags.hHorr)
+    console.log(header.number + " " + doCheck)
   if(doCheck === 1) {
-    if(header.withFlags.glasDoors === header.hingeFlags.hHorr) return false;
+    if(header.hingeFlags.hHorr !== 0 && header.withFlags.glasDoors === header.hingeFlags.hHorr) { return false; }
     return true }
   return false;
 }
@@ -110,3 +130,9 @@ function outDrawCheck(header){
     let doCheck = header.withFlags.drawers - header.withFlags.innerDF;
     return doCheck;
 }
+function onlyOuterFronts(header){
+    let doCheck = header.withFlags.drawers - header.withFlags.drawerFront;
+    return doCheck === 0 ? true : false
+}
+
+//
