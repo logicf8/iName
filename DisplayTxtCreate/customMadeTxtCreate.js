@@ -93,6 +93,35 @@ export function DtByArt(sP, header, cfg) {
 
             if (warningArticles.includes(article.artNr)) {
                 thisLevel = "warning";
+    
+                let stone = ["EXHULT", "YTTERVÄGGA"];
+                const isStone = stone.includes(article.name);
+                const stats = sP.cmInfoFlag?.[cfg.infoKey].stats;
+
+                if (
+                    (!isStone && stats <= 3) ||
+                    (isStone && stats <= 2)
+                ) {
+                    applyUndergluedFallback(sP.cmInfoFlag);
+
+                    const totalOperations =
+                        sP.cmInfoFlag.sinks +
+                        sP.cmInfoFlag.hobs +
+                        (isStone ? 0 : sP.cmInfoFlag.corners);
+
+                    const cmFlag = buildCmFlag({
+                        sinks: sP.cmInfoFlag.sinks,
+                        hobs: sP.cmInfoFlag.hobs,
+                        corners: isStone ? 0 : sP.cmInfoFlag.corners
+                    });
+
+                    if (article.quantity === totalOperations && cmFlag.length > 0) {
+                        dTxt = formatOperationText(
+                            isStone ? "Ursågat för" : "Förfräst för",
+                            cmFlag
+                        );
+                    }
+                }
             }
             
             addDisplayTxt(sP.displayTxts, {
@@ -101,6 +130,45 @@ export function DtByArt(sP, header, cfg) {
             });
         }
     });
+}
+
+function buildCmFlag({ sinks, hobs, corners = 0 }) {
+    const cmFlag = [];
+
+    if (sinks > 0) {
+        cmFlag.push(sinks === 1 ? "diskho" : `${sinks} diskhoar`);
+    }
+
+    if (hobs > 0) {
+        cmFlag.push(hobs === 1 ? "häll" : `${hobs} hällar`);
+    }
+
+    if (corners > 0) {
+        cmFlag.push(corners === 1 ? "skarv" : `${corners} skarvar`);
+    }
+
+    return cmFlag;
+}
+
+function formatOperationText(prefix, cmFlag) {
+    if (cmFlag.length === 1) {
+        return `${prefix} ${cmFlag[0]}`;
+    }
+
+    if (cmFlag.length === 2) {
+        return `${prefix} ${cmFlag[0]} och ${cmFlag[1]}`;
+    }
+
+    const last = cmFlag.pop();
+    return `${prefix} ${cmFlag.join(", ")} och ${last}`;
+}
+
+function applyUndergluedFallback(cmInfoFlag) {
+    const undergluedCount = cmInfoFlag.wtInfo?.underglued?.length ?? 0;
+
+    if (undergluedCount > 0) {
+        cmInfoFlag.sinks -= undergluedCount;
+    }
 }
 
 /* -------------------------------------------------------------------------- */
