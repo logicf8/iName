@@ -159,7 +159,10 @@ function combinationTypeAndSize(sectionPortfolio, header, article) {
     case filter.Cabinet.group3.BuiltIn: header.builtIn = true; break;
     case filter.Cabinet.group3.Corner:
       header.corner = true;
-      sectionPortfolio.cmInfoFlag.corners += article.quantity;
+      if(article.group2 === "Bänkskåp"){
+        sectionPortfolio.cmInfoFlag.corners += article.quantity;
+      }
+
       break;
     case filter.Cabinet.group3.Fan: header.fan = true; break;
   }
