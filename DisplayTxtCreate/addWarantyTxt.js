@@ -8,7 +8,7 @@ export function setBaseCabWarrantyTxt(sP, header){
 
   if(header.forFlags.sink){
     addDisplayTxt(sP.displayTxts, {
-      text: `${startTxt} Hyllplansskydd & tätningssats`,
+      text: `${startTxt} Hyllplansskydd & tätningssats. Köp vattenlarm säljs ej av IKEA`,
       level: "info"
     });
   }
@@ -152,4 +152,5 @@ export function meVentWarranty(sP){
     level: "info"
   });
 }
+
 
