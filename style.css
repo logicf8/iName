@@ -1,0 +1,509 @@
+/* ===== Grundstil ===== */
+body {
+  font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+  font-size: 14px;
+  line-height: 1.3;
+  letter-spacing: 0.2px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: #f5f5f5;
+  margin: 0;
+  padding: 0;
+  color: #111;
+}
+
+/* ===== Container ===== */
+.container, .reportContainer, .reportExpContainer {
+  max-width: 810px;
+  margin: 24px auto;
+  padding: 16px;
+  background: #ffffff;
+  border-radius: 6px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+  box-sizing: border-box; /*NY*/
+}
+
+.reportContainer {
+  display: none;
+  grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+  gap: 16px;
+}
+
+.reportItem {
+  border: 1px solid #ddd;
+  padding: 12px;
+}
+
+.infoEmoji {
+  margin-left: 5px;
+  cursor: pointer;
+  font-size: 14px;
+  color: #0058a3;
+}
+
+.reportExpContainer {
+  display: none;
+}
+.reportExpContainer h3 {
+  margin-bottom: 10px; /* öka värdet tills det känns bra */
+}
+
+.reportExpContainer p {
+  margin: 2px 6px;      /* ↓ justera detta värde */
+  line-height: 1.2;   /* tätare rader */
+  font-size: 12px;
+}
+
+/* ===== Rubrik ===== */
+h1 {
+  text-align: center;
+  font-weight: 700;
+  font-size: 28px;
+  letter-spacing: 1.2px;
+  margin-top: 0px;
+  margin-bottom: 14px;
+  color: #0058a3;
+  position: relative;
+  text-shadow: 1px 0.5px 1px rgba(0, 0, 0, 0.3);
+}
+
+h2 {
+  text-align: center;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 1.2px;
+  margin-bottom: 0px;
+  color: #0058a3;
+  display: none;
+  text-shadow: 0.5px 0.5px 1px rgba(0, 0, 0, 0.3);
+}
+
+h3 {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 1.2px;
+  margin-bottom: 0px;
+  color: red;
+  display: inline-block;
+  text-shadow: 0.5px 0.5px 1px rgba(0, 0, 0, 0.3);
+}
+
+h1::after {
+  content: "";
+  display: block;
+  width: 260px;
+  height: 3px;
+  margin: 6px auto 0;
+  background-color: #ffdb00;
+  border-radius: 2px;
+}
+
+/* ===== Textarea ===== */
+textarea {
+  width: 100%;
+  height: 100px;
+  margin-bottom: 8px;
+  padding: 8px;
+  font-size: 13px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  resize: vertical;
+  box-sizing: border-box;
+}
+
+textarea:focus {
+  outline: none;
+  border-color: #0058a3;
+}
+
+/* ===== Knappar ===== */
+button {
+  padding: 10px 16px;
+  margin: 4px 0;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  width: 100%;
+  box-sizing: border-box;
+  background-color: #0058a3;
+  color: #ffffff;
+  border: none;
+  border-radius: 4px;
+  text-shadow: 0.5px 0.5px 1px rgba(0, 0, 0, 0.3);
+}
+
+button:hover {
+  background-color: #004f93;
+}
+
+/* ===== Kopiera-knapp ===== */
+#copyBtn {
+  margin-top: 12px;
+  background-color: #0058a3;
+  border-top: 2px solid #e6e6e6;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  display: none;
+}
+
+/* ===== Lista ===== */
+#displayContainer {
+  max-height: 176px;
+  overflow-y: auto;
+  margin-top: 12px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  background-color: #fafafa;
+}
+
+#displayList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  position: relative; /* Viktigt för linjen */
+}
+
+/* Vertikal linje mellan kolumnerna */
+#displayList::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 26px; /* Placera linjen direkt efter emoji-kolumnen */
+  width: 2px; /* Tjocklek på linjen */
+  background-color: #ccc; /* Färg på linjen */
+  z-index: 0;
+}
+
+/* Lista-rader */
+#displayList li {
+  display: flex;
+  align-items: center;
+  padding: 4px 0;
+  height: 22px;
+  font-size: 14px;
+  border-bottom: 1px solid #e6e6e6;
+  cursor: pointer;
+  position: relative; /* Innehållet över linjen */
+  z-index: 1;
+}
+
+#displayList li:hover {
+  background-color: #f0f6fc;
+}
+
+#displayList li.selected,
+.line.selected {
+  background-color: #0058a3;
+  color: #ffffff;
+}
+
+/* Emoji-kolumn */
+#displayList .emoji {
+  width: 26px;           /* Bredd på emoji-kolumn */
+  text-align: center;    /* Centrera emoji */
+  flex-shrink: 0;        /* Behåll bredden */
+  user-select: none;
+  background-color: none; /* Samma som bakgrund */
+  padding: 8px 0;
+  margin-right: 4px;
+  border-radius: 4px 0 0 4px;
+}
+
+/* Text-kolumn */
+#displayList .text {
+  flex: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding-left: 4px;
+}
+
+/* ===== Copy status ===== */
+#copyStatus {
+  margin-top: 10px;
+  padding: 8px 12px;
+  font-size: 13.6px;
+  background-color: #fff9db;
+  border: 1px solid #f0d000;
+  border-radius: 4px;
+  display: none;
+}
+
+#emojiDescription {
+  display: flex;
+  justify-content: space-between; /* Sprid h3:orna vänster/höger */
+  width: 100%;                   /* Viktigt för full bredd */
+  gap: 12px;
+  display: none;
+}
+
+#emojiDescription h3 {
+  margin: 0;
+}
+
+/* ===== Två knappar bredvid varandra ===== */
+.button-row {
+  display: flex;
+  gap: 8px;
+  margin-top: 0px;
+  display: none;
+}
+
+.button-row button {
+  flex: 1;
+}
+
+.secondary-btn {
+  background-color: #ffdb00;
+  color: #0058a3;
+}
+
+.secondary-btn:hover {
+  background-color: #f8d300; /* en lite mörkare gul vid hover */
+  color: #0058a3; /* behåll textfärgen */
+}
+
+/* ===== Editfält ===== */
+#editText {
+  margin-top: 8px;
+  background-color: #fdfefe;
+  font-size: 13.6px;
+  height: 33px;
+  display: none;
+}
+
+/* Text blir röd om den är för lång */
+.text-too-long {
+  color: red;
+}
+
+/* ===== cPinOrder artikelavdelning ===== */
+
+.pin-section {
+  margin-top: 0px;
+  padding-top: 8px;
+  border-top: 2px solid #e6e6e6;
+}
+
+.pin-section h3 {
+  margin: 0 0 6px 0;
+  color: #0058a3;
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.pin-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 8px;
+  margin-bottom: 4px;
+  background: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.pin-row:nth-child(even) {
+  background: #f1f6fb;
+}
+
+.pin-row span {
+  font-weight: 600;
+  min-width: 90px;
+}
+
+
+/* ===== Mobil ===== */
+@media (max-width: 480px) {
+  .container {
+    margin: 12px;
+    padding: 12px;
+  }
+
+  h1 {
+    font-size: 20px;
+  }
+
+  textarea {
+    font-size: 14px;
+  }
+}
+
+/* ===== cPinOrder artikelavdelning ===== */
+
+/* Container för kolumner */
+.pin-columns {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+  margin: 4px 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Varje kolumn */
+.pin-section {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 8px;
+  border-radius: 6px;
+  background-color: #fafafa;
+  flex: 0 0 auto;       /* Anpassa bredd efter innehåll */
+  max-width: 270px;     /* valfritt tak för kolumnen */
+  box-sizing: border-box;
+  word-wrap: break-word; /* gör att text bryts istället för att expandera kolumnen */
+}
+
+/* Rubrik i kolumn */
+.pin-section h3 {
+  margin: 0 0 4px 0;
+  color: #0058a3;
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  border-bottom: 1px solid #ccc;
+  padding-bottom: 4px;
+
+  white-space: normal;   /* Bryt rad istället för att hålla på samma rad */
+  word-break: break-word; /* Bryt långa ord */
+}
+
+/* Artikelrad */
+.pin-row {
+  display: grid;
+  grid-template-columns: 1fr auto; /* namn | - antal + */
+  align-items: center;
+  font-weight: 700;
+  font-size: 13px;
+  gap: 8px;
+  padding: 4px 6px;
+  background: #f9f9f9;
+  border-radius: 4px;
+}
+
+.pin-row:nth-child(even) {
+  background: #f1f6fb;
+}
+
+.pin-row span {
+  font-weight: 600;
+  min-width: 0;       
+  white-space: normal; /* tillåt radbrytning */
+}
+
+/* Nummerfält */
+.pin-row input[type="number"] {
+  width: 50px;
+  text-align: center;
+}
+
+/* Ta bort standard-pilar i numberfält */
+input[type=number]::-webkit-outer-spin-button,
+input[type=number]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* ===== Sektion under kolumnerna (bildartiklar) ===== */
+.pin-image-section {
+  margin-top: 20px;
+  padding-top: 12px;
+  border-top: 2px solid #e6e6e6;
+}
+
+.pin-image-section h3 {
+  margin: 0 0 10px 0;
+  color: #0058a3;
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+/* Grid för bildartiklar */
+.pin-image-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  box-sizing: border-box;
+}
+
+/* Enskild bildartikel */
+.pin-image-item {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 8px;
+  border-radius: 6px;
+  background: #fff;
+  flex: 1 1 calc(25% - 9px); /* Fyra artiklar minus gap */
+  box-sizing: border-box;
+  max-width: none; /* ta bort max-width som blockerade 4 kolumner */
+}
+
+
+/* Titel överst på bildartikel */
+.pin-image-title {
+  font-weight: 700;
+  font-size: 13px;
+  color: #0058a3;
+  border-bottom: 1px solid #ccc;
+  padding-bottom: 4px;
+  word-break: break-word;
+  white-space: normal;  
+}
+
+/* Rad med bild + antal */
+.pin-image-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Bild */
+.pin-image-item img,
+.pin-image-row img {
+  width: 100%;       
+  max-width: 150px;
+  height: auto;
+  display: block;
+}
+
+/* Nummerfält i bildartiklar och rader */
+.pin-image-item input[type="number"],
+.pin-image-row input[type="number"] {
+  width: 25px;
+  text-align: center;
+}
+
+.pin-label {
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.amount-wrap {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  justify-self: end;
+}
+
+.amount-wrap button {
+  width: 22px;
+  height: 22px;
+  padding: 0;
+  font-size: 14px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.amount-wrap input[type="number"] {
+  width: 42px;
+  text-align: center;
+}
