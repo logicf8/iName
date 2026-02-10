@@ -391,8 +391,8 @@ function renderCPinOrder() {
     exportBtnWrapper.style.textAlign = 'center';
     exportBtnWrapper.style.marginTop = '12px';
 
-    exportBtnWrapper.appendChild(createExportBtn());
-    pinContainer.appendChild(exportBtnWrapper);
+    pinContainer.appendChild(createBottomButtonRow());
+
 
   const extraArtPics = [
     { pic: '80012853.avif', name: 'Lådmatta 150 cm', artNr: '800.128.53' },
@@ -444,7 +444,7 @@ function renderCPinOrder() {
   });
 
   imageSection.appendChild(imageGrid);
-  imageSection.appendChild(createExportBtn());
+  imageSection.appendChild(createBottomButtonRow());
   pinContainer.appendChild(imageSection);
   //pinContainer.appendChild(createExportBtn());
 
@@ -559,7 +559,6 @@ function createExportBtn() {
   wrapper.style.width = '100%';
   wrapper.style.display = 'flex';
   wrapper.style.justifyContent = 'center';
-  wrapper.style.marginTop = '12px';
 
   const btn = document.createElement('button');
   btn.textContent = 'Hämta import fil';
@@ -567,6 +566,45 @@ function createExportBtn() {
 
   wrapper.appendChild(btn);
   return wrapper;
+}
+
+function createResetBtn() {
+  const btn = document.createElement('button');
+  btn.textContent = 'Nollställ';
+  btn.addEventListener('click', () => {
+    if (!confirm('Vill du nollställa alla valda artiklar?')) return;
+    resetAllPinInputs();
+  });
+  return btn;
+}
+
+function resetAllPinInputs() {
+  // Nollställ alla inputs
+  document.querySelectorAll('.pin-row input[type="number"], .pin-image-item input[type="number"]')
+    .forEach(input => input.value = 0);
+
+  // Nollställ lagrad data
+  Object.keys(cPinAmounts).forEach(key => {
+    cPinAmounts[key] = 0;
+  });
+}
+
+function createBottomButtonRow() {
+  const row = document.createElement('div');
+  row.className = 'pin-button-row';
+
+  const resetWrap = document.createElement('div');
+  resetWrap.className = 'pin-btn-reset';
+  resetWrap.appendChild(createResetBtn());
+
+  const exportWrap = document.createElement('div');
+  exportWrap.className = 'pin-btn-export';
+  exportWrap.appendChild(createExportBtn());
+
+  row.appendChild(resetWrap);
+  row.appendChild(exportWrap);
+
+  return row;
 }
 
 
