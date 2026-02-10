@@ -507,3 +507,33 @@ input[type=number]::-webkit-inner-spin-button {
   width: 42px;
   text-align: center;
 }
+
+.pin-button-row {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.pin-btn-reset {
+  flex: 0 0 10%;
+}
+
+.pin-btn-export {
+  flex: 0 0 90%;
+  margin-top: 0
+}
+
+.pin-button-row button {
+  width: 100%;
+  margin: 0;
+  align-items: stretch;
+}
+
+/* Säkerställ samma höjd visuellt */
+.pin-btn-reset,
+.pin-btn-export {
+  display: flex;
+  align-items: center;
+}
