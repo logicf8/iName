@@ -518,22 +518,24 @@ input[type=number]::-webkit-inner-spin-button {
 
 .pin-btn-reset {
   flex: 0 0 10%;
+  display: flex;
+  align-items: center;
+  justify-content: center; /* centrera text horisontellt */
 }
 
 .pin-btn-export {
   flex: 0 0 90%;
-  margin-top: 0
+  margin-top: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center; /* centrera text horisontellt */
 }
 
 .pin-button-row button {
   width: 100%;
   margin: 0;
-  align-items: stretch;
+  text-align: center; /* säkerställer att texten i knappen är centrerad */
+  align-items: stretch; /* behåller höjden konsekvent */
 }
 
-/* Säkerställ samma höjd visuellt */
-.pin-btn-reset,
-.pin-btn-export {
-  display: flex;
-  align-items: center;
-}
+
