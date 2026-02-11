@@ -38,7 +38,7 @@ function getFrontText(withFlags) {
 }
 
 function getGroupText(header) {
-  if (header.group2 === "Diskmaskin" && header.width !== "45") {
+  if (header.group2 === "Diskmaskin" && header.width !== 45 && header.name !== "SÖDERBODA") {
     return " och kopplingsskenor";
   }
 
@@ -54,4 +54,5 @@ function getGroupText(header) {
 function capitalizeFirstLetter(str) {
   if (!str) return str;
   return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
+
 }
