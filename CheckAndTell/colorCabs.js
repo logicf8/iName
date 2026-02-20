@@ -1,6 +1,6 @@
 // CheckAndTell/colorCabs.js
 
-import { filter } from "../../global/myConstants.js";
+import { filter } from "../global/myConstants.js";
 
 export function cabColors(sectionPortfolio) {
   const cabinetGroup = filter.Cabinet.group1;
@@ -43,4 +43,5 @@ export function cabColors(sectionPortfolio) {
     colors: colorMap,
     colorMap // Lägg till colorMap för result
   };
+
 }
