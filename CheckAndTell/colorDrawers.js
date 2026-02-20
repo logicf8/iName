@@ -1,6 +1,6 @@
 // CheckAndTell/colorDrawers.js
 
-import { filter } from "../../global/myConstants.js";
+import { filter } from "../global/myConstants.js";
 
 export function drawerColors(sectionPortfolio) {
 
@@ -52,4 +52,5 @@ export function drawerColors(sectionPortfolio) {
     colors: colorMap,
     colorMap
   };
+
 }
