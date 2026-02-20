@@ -1,5 +1,5 @@
 // CheckAndTell/familyTypes.js
-import { filter } from "../../global/myConstants.js";
+import { filter } from "../global/myConstants.js";
 
 export function familyTypes(sectionPortfolio) {
 
@@ -76,4 +76,5 @@ export function familyTypes(sectionPortfolio) {
     colors: arrayColorMap,
     colorMap: arrayColorMap
   };
+
 }
