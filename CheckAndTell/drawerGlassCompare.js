@@ -1,5 +1,5 @@
 // CheckAndTell/drawerGlassCompare.js
-import { filter } from "../../global/myConstants.js";
+import { filter } from "../global/myConstants.js";
 
 export function collectDrawerGlass(sectionPortfolio) {
 
@@ -147,4 +147,5 @@ export function compareDrawerGlass(drawers, glassSides) {
     [...headersByHeight.med].every(h => result.headersWithMedGlass.has(h));
 
   return result;
+
 }
