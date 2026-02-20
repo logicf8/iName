@@ -1,0 +1,17 @@
+export const nrHeaders = [
+  "TORNVIKEN - Vinhylla/Öppet väggskåp",
+  "TORNVIKEN - Öppet bänkskåp/vinhylla/lådsektion D60",
+  "TORNVIKEN - Bänkskåp öppen/vinhylla/hurts",
+  "TORNVIKEN - Öppet bänkskåp D60",
+  "TORNVIKEN - Bänkskåp öppen/vinhylla/hurts D60",
+  "TORNVIKEN - Öppet bänkskåp",
+  "VADHOLMA - Vinhylla/Öppet väggskåp",
+  "VADHOLMA - Öppet bänkskåp/Vinhylla/Lådsektion D60",
+  "VADHOLMA - Bänkskåp öppen/vinhylla/hurts",
+  "VADHOLMA - Bänkskåp öppen/vinhylla/hurts D60",
+  "ENHET - högstomme m hyllplan, vit",
+  "ENHET - högstomme m hyllplan, antracit",
+  "ENHET - väggstomme m hyllplan, vit",
+  "ENHET - väggstomme m hyllplan, antracit",
+  "ENHET - väggstomme m hyllplan, antracit",
+  "ENHET - väggstomme m hyllplan, vit"]
