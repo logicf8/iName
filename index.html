@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>iName</title>
+  <link rel="icon" href="pics/lazyrabbitico.ico" type="image/x-icon">
+  <link rel="stylesheet" href="style.css">
+
+</head>
+<body>
+  <div class="container">
+    <h1>iName | CopyTool</h1>
+    <textarea id="inputText" placeholder="Klistra in din artikellista här..." autofocus></textarea>
+    <button id="processBtn">Bearbeta text</button>
+    <div class="button-row">
+    <button id="ritningsBtn" class="secondary-btn">RitningsNR</button>
+    <button id="aliasBtn" class="secondary-btn">Alias</button>
+    <button id="internTextBtn" class="secondary-btn">InternText</button>
+    <button id="belongTextBtn" class="secondary-btn">Tillhör</button>
+    </div> 
+    <div id="emojiDescription">
+      <h3 id="missingH3">[🚨] = text kan behöva korrigeras</h3>
+      <h3 id="expH3">[🔔] = innehåller produkt som har utgått</h3>
+    </div>
+    <div id="displayContainer">
+      <ul id="displayList"></ul>
+    </div>
+      <h2 id="minH2" style="text-align:left">  Senast kopierat</h2>
+    <div id="copyStatus">Ingen rad kopierad ännu</div>
+      <h2 id="minAndraH2" style="text-align:left">  Nästa att kopiera (redigerbar)</h2>
+    <textarea id="editText" placeholder="Redigera texten som ska kopieras..."></textarea>
+    <button id="copyBtn">Kopiera aktuell rad</button>
+  </div>
+  <div class="checkMainContainer">
+    <div class="checkTxtContainer"></div>
+    <div class="zoomResultContainer" style="display:none;"></div>
+  </div>
+  <div class="reportExpContainer"></div>
+  <div class="reportContainer">
+  </div>
+  <script type="module" src="app.js"></script>
+</body>
+</html>
