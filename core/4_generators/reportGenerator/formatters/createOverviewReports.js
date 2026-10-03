@@ -15,13 +15,13 @@ export function createOverviewReports(sectionPortfolio) {
     sectionPortfolio.countArtFlag.appliance >= 4 &&
     sectionPortfolio.priceFlag.pFronts > 0
   ) {
-    const discountedFrontPrice = sectionPortfolio.priceFlag.pFronts * 0.15;
+    const discountedFrontPrice = sectionPortfolio.priceFlag.pFronts * 0.25;
 
     sectionPortfolio.reportTxts.push({
       title: "🔥 Kampanj 🔥",
       text1: `💵 Rabatt: ${formatSEK(discountedFrontPrice)} kr`,
       text2: "",
-      info: "Uppfyller kravet: minst 6 stommar och 4 vitvaror (15% rabatt på fronter)"
+      info: "Uppfyller kravet: minst 6 stommar och 4 vitvaror (25% rabatt på fronter)"
     });
   }
 
