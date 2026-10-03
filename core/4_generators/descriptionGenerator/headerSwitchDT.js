@@ -15,6 +15,32 @@ import { artEmptyCorner } from './artCorner.js';
 export function switchByHeaderDT(sectionPortfolio) {
   let wTcount = 0, wPcount = 0;
 
+  // Första pass: skapa headers och DtByArt
+  sectionPortfolio.returnHeaders().forEach(header => {
+    if(header.constructor.name === "SecondStageHeader") {
+      switch(header.originalTxt) {
+
+        case "Bänkskiva": // Bänkskiva
+          if(wTcount === 0) {
+            makeHeaderTxt(sectionPortfolio, workTopCfg);
+            wTcount = 99;
+          }
+          DtByArt(sectionPortfolio, header, workTopCfg);
+          break;
+
+        case "Väggplatta": // Väggplatta
+        case "Väggpanel":
+          if(wPcount === 0) {
+            makeHeaderTxt(sectionPortfolio, wallPanelCfg);
+            wPcount = 99;
+          }
+          DtByArt(sectionPortfolio, header, wallPanelCfg);
+          break;
+      }
+    }
+  });
+
+  // Second pass: skapa displayTxt etc.
   sectionPortfolio.returnHeaders().forEach(header => {
     header.number = header.originalTxt.split('.')[0];
 
@@ -69,26 +95,8 @@ export function switchByHeaderDT(sectionPortfolio) {
           case noNrHeaders[3]: break;
           case noNrHeaders[4]: 
           case noNrHeaders[5]: handels(sectionPortfolio, header); break; // Knoppar handtag
-          
-          case noNrHeaders[6]: // Bänkskiva
-          case "Bänkskiva":
-            if(wTcount === 0) {
-              makeHeaderTxt(sectionPortfolio, workTopCfg);
-              wTcount = 99;
-            }
-            DtByArt(sectionPortfolio, header, workTopCfg);
-            break;
-            
-          case noNrHeaders[7]: // Väggplatta
-          case "Väggplatta":
-          case "Väggpanel":
-            if(wPcount === 0) {
-              makeHeaderTxt(sectionPortfolio, wallPanelCfg);
-              wPcount = 99;
-            }
-            DtByArt(sectionPortfolio, header, wallPanelCfg);
-            break;
-            
+          case noNrHeaders[6]: break; // Bänkskiva
+          case noNrHeaders[7]: break; // Väggplatta
           case noNrHeaders[8]: break; // Belysningstillbehör
           case noNrHeaders[9]: break; // Matplats
           case noNrHeaders[10]:
