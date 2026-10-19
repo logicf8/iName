@@ -13,7 +13,8 @@ export function pushAndOpenTxt(sP, result) {
     [PNO_STATUS.NONE]: "🟢 Nej",
     [PNO_STATUS.SOME]: "🟧 En eller flera",
     [PNO_STATUS.DEPTH_ERROR]: "🟥 ⚠️ Fel djup/antal ⚠️",
-    [PNO_STATUS.SAME_AS_OUTER]: "🟢 Antal = Yttre lådfronter"
+    [PNO_STATUS.SAME_AS_OUTER]: "🟢 Antal = Yttre lådfronter",
+    [PNO_STATUS.SAME_AS_INNER]: "🟢 Antal = Innre lådor"
   };
 
   // -----------------------------
