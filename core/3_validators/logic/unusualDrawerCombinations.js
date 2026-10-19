@@ -35,6 +35,7 @@ export function collectUnusualDrawerData(sectionPortfolio) {
       height: Number(header.height),
       type: header.type,
       forFlags: header.forFlags,
+      withFlags: header.withFlags,
       drawerArticles,
       drawerFronts,
       allArticles
@@ -60,6 +61,8 @@ export function analyzeUnusualDrawerOrders(orders) {
 
     const isHobFan = flags.hobFan;
     const isSink = flags.sink;
+    const isCompactOven = flags.compactOven;
+    const isMicro = flags.micro;
 
     // -------------------------
     // NYTT: ORSAKSLISTA
@@ -104,6 +107,14 @@ export function analyzeUnusualDrawerOrders(orders) {
       if (a.group4 === filter.Interior.group4.high) high += qty;
     });
 
+    const withFlags = order.withFlags || {};
+    const workSurfacesQty = Number(withFlags.workSerfaces) || 0;
+
+    // Arbetsytor räknas som låga lådor vid kontroll/jämförelse
+    if (workSurfacesQty > 0) {
+      low += workSurfacesQty;
+    }
+
     const combo = [low, medium, high];
 
     // -------------------------
@@ -112,11 +123,40 @@ export function analyzeUnusualDrawerOrders(orders) {
     let totalFronts = 0;
     let totalHeight = 0;
 
+    const frontHeights = [];
+
     order.drawerFronts.forEach(a => {
-      const qty = Number(a.quantity) || 1;
+      const rawQty = Number(a.quantity) || 1;
+      const h = Number(a.height);
+
+      const isCompactOvenOrMicro80 = (isCompactOven || isMicro) && Number(order.width) === 80;
+      const qty = (h === 10 && !isCompactOvenOrMicro80) ? rawQty * 2 : rawQty;
+
       totalFronts += qty;
-      totalHeight += Number(a.height) * qty;
+      totalHeight += h * qty;
+      for (let i = 0; i < qty; i++) {
+        frontHeights.push(h);
+      }
     });
+
+    frontHeights.sort((a, b) => b - a);
+
+    const is4F_40_20_10_10 =
+      frontHeights.length === 4 &&
+      frontHeights[0] === 40 &&
+      frontHeights[1] === 20 &&
+      frontHeights[2] === 10 &&
+      frontHeights[3] === 10;
+
+    const is4F_20_20_20_20 =
+      frontHeights.length === 4 &&
+      frontHeights.every(h => h === 20);
+
+    const is3F_20_10_10 =
+      frontHeights.length === 3 &&
+      frontHeights[0] === 20 &&
+      frontHeights[1] === 10 &&
+      frontHeights[2] === 10;
 
     const drawersQty = (order.drawerArticles || [])
       .reduce((sum, a) => sum + (Number(a.quantity) || 1), 0);
@@ -182,8 +222,32 @@ export function analyzeUnusualDrawerOrders(orders) {
 
     let status = "🚫\nIngen kontroll";
 
+    const isMatch = (list, combo) =>
+      list.some(arr =>
+        arr.length === combo.length &&
+        arr.every((v, i) => v === combo[i])
+      );
+
     if (customCaseA || customCaseB || customCaseC) {
       status = "✅";
+    }
+
+    else if (
+      (isCompactOven || isMicro) &&
+      Number(order.height) === 80 &&
+      is3F_20_10_10
+    ) {
+      const listCompactMicro80 = [[2,0,0]];
+      status = isMatch(listCompactMicro80, combo) ? "❌" : "✅";
+    }
+
+    else if (
+      (isCompactOven || isMicro) &&
+      Number(order.width) === 80 &&
+      is3F_20_10_10
+    ) {
+      const listCompactMicro80 = [[2,0,0]];
+      status = isMatch(listCompactMicro80, combo) ? "❌" : "✅";
     }
 
     else if (
@@ -225,12 +289,6 @@ export function analyzeUnusualDrawerOrders(orders) {
     // =========================
     else {
 
-      const isMatch = (list, combo) =>
-        list.some(arr =>
-          arr.length === combo.length &&
-          arr.every((v, i) => v === combo[i])
-        );
-
       const list3F = [[1,2,0],[2,2,0],[1,1,1],[1,3,0],[0,3,0],[2,0,1],[3,0,1],[2,1,0],[0,3,1],[3,2,0],[5,1,0],[4,1,0]];
       const list2F = [[1,2,0],[2,2,0],[1,1,1],[1,3,0],[0,3,0],[0,2,0],[0,1,1],[0,1,2]];
 
@@ -243,9 +301,19 @@ export function analyzeUnusualDrawerOrders(orders) {
       const list1F40 = [[0,1,0], [1,1,0], [0,1,1]];
       const list2F60 = [[1,1,0], [1,0,1], [0,2,0], [1,2,0], [2,1,0], [3,1,0]];
 
+      // 🆕 LISTOR FÖR 4 FRONTER HÖJD 80
+      const list4F_40_20_10_10 = [
+        [1,1,1], [1,1,2], [1,2,1], [1,3,0],
+        [2,2,0], [2,1,2],
+        [3,0,1], [3,2,0], [4,1,0], [5,1,0]
+      ];
+
+      const list4F_20_20_20_20 = [
+        [1,3,0], [3,2,0], [5,1,0], [7,1,0]
+      ];
+
       const affectingArticles = (order.allArticles || []).filter(a =>
-        a.artNr === "102.432.96" ||
-        a.artNr === "302.432.95"
+        a.artNr === "302.432.95" || a.artNr === "102.432.96"
       );
 
       const hasHall = affectingArticles.length > 0;
@@ -282,6 +350,14 @@ export function analyzeUnusualDrawerOrders(orders) {
         // =========================
         // 🆕 NYA FALL
         // =========================
+        else if (totalFronts === 4 && totalHeight === 80 && is4F_40_20_10_10) {
+          status = isMatch(list4F_40_20_10_10, combo) ? "❌" : "✅";
+        }
+
+        else if (totalFronts === 4 && totalHeight === 80 && is4F_20_20_20_20) {
+          status = isMatch(list4F_20_20_20_20, combo) ? "❌" : "✅";
+        }
+
         else if (totalFronts === 1 && totalHeight === 20) {
           status = isMatch(list1F20, combo) ? "❌" : "✅";
         }
@@ -304,7 +380,8 @@ export function analyzeUnusualDrawerOrders(orders) {
       totalHeight,
       status,
       ruleTriggers,
-      hingeArticles 
+      hingeArticles,
+      workSurfacesQty
     };
 
   });
