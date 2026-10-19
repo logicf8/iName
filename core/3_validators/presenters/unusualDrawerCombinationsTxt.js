@@ -1,3 +1,4 @@
+//core\3_validators\presenters\unusualDrawerCombinationsTxt.js
 import { createValidationEntry } from '../helper/validationResultFactory.js';
 import { helpMessages } from './helper/helpMessages.js';
 import { prepareHeaders } from './common/prepareHeaders.js';
@@ -65,10 +66,16 @@ export function unusualDrawerCombinationsTxt(sP, result) {
     {
       color: "Lådor",
       numbers: result.headers.map(h => {
-        return h.drawerArticles.map(a => {
+        const lines = h.drawerArticles.map(a => {
           const qty = Number(a.quantity) || 1;
           return `${a.width}x${a.depth}-${a.group4} (${qty} st)`;
-        }).join("\n");
+        });
+
+        if (h.workSurfacesQty > 0) {
+          lines.push(`Arbetsyta (${h.workSurfacesQty} st)`);
+        }
+
+        return lines.join("\n");
       })
     },
     {
