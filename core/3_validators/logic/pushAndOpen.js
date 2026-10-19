@@ -8,7 +8,8 @@ export const PNO_STATUS = {
   SOME: "SOME",
   NONE: "NONE",
   DEPTH_ERROR: "DEPTH_ERROR",
-  SAME_AS_OUTER: "SAME_AS_OUTER"
+  SAME_AS_OUTER: "SAME_AS_OUTER",
+  SAME_AS_INNER: "SAME_AS_INNER",
 };
 
 // -----------------------------------------------------
@@ -180,6 +181,7 @@ export function analyzeOrders(orders) {
   const totalDrawers = headers.reduce((sum, h) => sum + h.totalDrawers, 0);
   const totalPnO = headers.reduce((sum, h) => sum + h.totalPnO, 0);
   const totalOuterFronts = headers.reduce((sum, h) => sum + h.totalOuterFronts, 0); // ✅ ny
+  const totalInner = headers.reduce((sum, h) => sum + h.totalInner, 0); // ✅ ny
   const hasDepthError = headers.some(h => h.result === PNO_STATUS.DEPTH_ERROR);
 
   let overallResult;
@@ -189,6 +191,9 @@ export function analyzeOrders(orders) {
   } 
   else if (totalPnO === totalOuterFronts && totalPnO > 0) {
     overallResult = PNO_STATUS.SAME_AS_OUTER; // ✅ din nya logik
+  }
+  else if (totalPnO === totalInner && totalPnO > 0) {
+    overallResult = PNO_STATUS.SAME_AS_INNER; // ✅ ny logik
   }
   else if (totalPnO === 0 && totalDrawers > 0) {
     overallResult = PNO_STATUS.NONE;
